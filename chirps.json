@@ -1,0 +1,13 @@
+{
+    "0": {
+        "id": 0,
+        "user": "George",
+        "message": "What up"
+    },
+    "1": {
+        "id": 1,
+        "user": "Katherine",
+        "message": "Hello Friends"
+    },
+    "nextid": 2
+}
