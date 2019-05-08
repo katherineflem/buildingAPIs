@@ -12,24 +12,22 @@
 </head>
 
 <body>
-    <h1>Hello World</h1>
-
     <div class="container">
-        <form>
-            <div class="form-group">
-                <label for="inputname">Name:</label>
-                <input type="text" name="user" placeholder="name">
-            </div>
-            <div class="form-group">
-                <label for="insertchirp">Message:</label>
-                <input type="text" name="chirp" placeholder="insert message">
-            </div>
-            <button name="submit chirp" class="btn btn-outline-primary">Submit Chirp</button>
-        </form>
+        <section class="row">
+            <article class="col-md-12">
+                <form class="form-group p-3 border">
+                    <label for="inputname">Name:</label>
+                    <input type="text" class="form-control" id="user" placeholder="name">
+                    <label for="insertchirp">Message:</label>
+                    <input type="text" id="message" class="form-control" placeholder="insert message">
+                    <button id="submit chirp" class="btn btn-outline-primary">Submit Chirp</button>
+                </form>
+            </article>
+        </section>
     </div>
-    <ul class="list-group">
-        
-    </ul>
+    <div class="container">
+        <ul class="list-group"></ul>
+    </div>
     <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
     <script src="app.js"></script>
 </body>
