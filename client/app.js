@@ -5,11 +5,13 @@ const displayChirps = (data) => {//pass in the data that we got in the request
     $('ul').empty(); //emptys out the list when a new chirp is displayed
     delete data.nextid; //data is an object with properties nextid is one of them
     //for in loop grabs the id out of data so we can loop through
-    for (let id in data) { 
+    for (let id in data) {
         //create a new list item
-        let li = $(`<li class = "list-group item" id= ${[id]}> user: ${data[id].user} said: ${data[id].message}</li>`)
-        $('ul').append(li); 
-        // console.log(data[id].user)
+        let li = $(`<li class = "list-group item d-block" id= ${id}> user: ${data[id].user} said: ${data[id].message}
+         <button id="deletebtn" class="btn btn-danger" onclick= (deleteChirp(${id})) >X</button>
+         <button id="editbtn" class="btn btn-primary" data-toggle="modal" data-target="#editmodal" onclick= (editChirp(${id})) >Edit Chirp</button>
+        </li>`)
+        $('ul').append(li);
         // console.log(data[id].message); //objects work with key value pairs not index positions
     }
 }
@@ -22,7 +24,7 @@ const displayChirps = (data) => {//pass in the data that we got in the request
 
 //FUNCTION TO GET CHIRPS FROM SERVER
 const getChirps = async () => {
-    try { 
+    try {
         let data = await $.ajax({ //wait for the data
             type: "GET", //get request
             url: "/api/chirps" //the url with data we want to retrieve
@@ -40,7 +42,6 @@ const postChirp = async (newChirp) => { //pass in the new chirp
             url: '/api/chirps',
             data: newChirp  //defining data as a newchirp parameter
         });
-        console.log(newChirp)
         $("#user").val(''); //clear out the input
         $('#message').val(''); //clear out the input
         getChirps();//get new list of chirps with additional chirps added
@@ -56,37 +57,57 @@ $('#submit-chirp').click(() => {
     event.preventDefault(); //keeps from refreshing form with click 
     //on click the newChirp will update to the value of whatever is typed in the inputs
     let newChirp = {
-        user: $('#user').val(), 
+        user: $('#user').val(),
         message: $('#message').val()
     }
-    console.log(newChirp)
     postChirp(newChirp)// post request to server 
 });
+
+
+const deleteChirp = async (id) => {
+    try {
+        await $.ajax({
+            type: 'DELETE',
+            url: `/api/chirps/${id}`,
+        })
+        $('li').remove()
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const editChirp = async (id) => {
+    try {
+        await $.ajax({
+            type: 'PUT',
+            url: `/api/chirps/${id}`
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+//when save changes button is clicked then 
+$("#savechanges").click(() => {
+    let inputtext = $('#edittext').val() //the value of what is typed into the input
+    let currentChirp = //unsure of how this is defined
+    if (inputtext != currentChirp) {// if the input text is different than the current chirp text,
+         $('#user').val(''), //clear the user and message values
+         $('#message').val('')
+         currentChirp.replace(currentChirp, inputtext) //replace with the input text
+    }
+    //replace the list content with text content typed in input
+
+})
+
+
 
 
 
     //use button click event to call the API
     //add x next to each chirp that will delete the chirp 
-    //when clicked
     //when a chirp is clicked- a popup modal lets you edit the chirp
-    //use express static middleware
-    //jquery functions for calling API's: $.ajax, $.get $.post
 
-    //on click-- editing posts and deleting posts-- add X button
-    //button onclick ="deleteChirps($(id)"
-
-    // const deleteChirp =async(id)=>{
-    //     console.log(id);
-    // }
-
-      // const editChirp =async(id)=>{
-    //     console.log(id);
-    // }
-
-
-    //modals exists in the DOM as is -- copy and past from bs
-    //paste in index.html
-    //turns itself on and off-toggle
     //data target
     //data toggle="modal"
     //add another button called Edit in app.js when button clicked modal is popped up

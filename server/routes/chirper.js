@@ -26,6 +26,7 @@ router.put('/:id', (req, res) => {
 })
 
 router.delete('/:id', (req,res)=>{
+    let id = req.params.id
     res.send(chirpStore.DeleteChirp(id))
 })
 // let updateChirp = (id, chirp) => {
