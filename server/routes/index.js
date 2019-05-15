@@ -8,7 +8,7 @@ const usersRouter = require('./users')
 let router = express.Router();
 
 // whatever you put here is what you are going to pass back to the server.js
-router.use('/chirps', chirpsRouter);
+router.use('/chirps', chirpsRouter); //add this route /chirps and get the logic out of ChirpsRouter
 router.use('/users', usersRouter)
 
 module.exports= router;

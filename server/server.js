@@ -1,6 +1,5 @@
 const express = require('express')
 const cors = require('cors');
-const path = require('path')
 const apiRouter = require('./routes')//the routes folder]
 const morgan = require('morgan')
 
@@ -16,9 +15,9 @@ app.use(express.urlencoded({ extended: false }))//you will want this when workgi
 //is there a body, yes, so express.json kicks on and creates a body attached the the request
 app.use(express.json());//same as bodyparser just built into express
 
-app.use(express.static(path.join(__dirname, '../client')))
+app.use(express.static('client'))
 
-app.use('/api', apiRouter)
+app.use('/api', apiRouter)//want to use apiRouter logic on a path called api
 
 app.listen(3000)
 

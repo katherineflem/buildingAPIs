@@ -9,7 +9,7 @@ const displayChirps = (data) => {//pass in the data that we got in the request
         //create a new list item
         let li = $(`<li class = "list-group item d-block" id= ${id}> user: ${data[id].user} said: ${data[id].message}
          <button id="deletebtn" class="btn btn-danger" onclick= (deleteChirp(${id})) >X</button>
-         <button id="editbtn" class="btn btn-primary" data-toggle="modal" data-target="#editmodal" onclick= (editChirp(${id})) >Edit Chirp</button>
+         <button id="editbtn" class="btn btn-primary" data-toggle="modal" data-target="#editmodal" onclick= (editModal(${id})) >Edit Chirp</button>
         </li>`)
         $('ul').append(li);
         // console.log(data[id].message); //objects work with key value pairs not index positions
@@ -70,49 +70,55 @@ const deleteChirp = async (id) => {
             type: 'DELETE',
             url: `/api/chirps/${id}`,
         })
-        $('li').remove()
+        getChirps(); //make API request to get new list of chirps at this point in time and display them afterwards
+        console.log(id)
     } catch (err) {
         console.log(err)
     }
 }
 
-const editChirp = async (id) => {
-    try {
+const editChirp = async (id, chirp)=>{
+    try{
         await $.ajax({
             type: 'PUT',
+            url: `/api/chirps/${id}`,
+            data: chirp 
+        });
+        getChirps(); //after chirp has been edited, it needs to get the new list of chirps and render to the screen
+    }catch (err){
+        console.log(err)
+    }
+}
+
+
+//EDIT MODAL -- MAKE SURE IT IS PREFILLED WITH INFO WE NEED
+const editModal = async (id) => {
+    try {
+let chirp = await $.ajax({ //this will get us our singular chirp
+            type: 'GET',
             url: `/api/chirps/${id}`
         })
+        $('#edittext').val(chirp.message);//fills in modals input with the value of the current chirp 
+        $('.modal-title').attr('id',id)//select this h5 in the modal and assign an id attribute 
+        $('.modal-title').text(`Edit Chirp #${id}`)//and assign text to it
+        $('#edituser').val(chirp.user)
     } catch (err) {
         console.log(err)
     }
 }
 
-//when save changes button is clicked then 
-$("#savechanges").click(() => {
-    let inputtext = $('#edittext').val() //the value of what is typed into the input
-    let currentChirp = //unsure of how this is defined
-    if (inputtext != currentChirp) {// if the input text is different than the current chirp text,
-         $('#user').val(''), //clear the user and message values
-         $('#message').val('')
-         currentChirp.replace(currentChirp, inputtext) //replace with the input text
-    }
-    //replace the list content with text content typed in input
-
+// when save changes button is clicked then get the id and the chirp and pass that in 
+$("#savechanges").click(()=>{
+    let id= $('.modal-title').attr('id')//returns the id of the modal title
+    //need the user and the new chirp message
+    let chirp= {
+        user: $('#edituser').val(),
+        message: $('#edittext').val()
+    };
+    editChirp(id, chirp);
 })
+    // replace the list content with text content typed in input
 
 
 
 
-
-    //use button click event to call the API
-    //add x next to each chirp that will delete the chirp 
-    //when a chirp is clicked- a popup modal lets you edit the chirp
-
-    //data target
-    //data toggle="modal"
-    //add another button called Edit in app.js when button clicked modal is popped up
-    //
-
-    //save chancegs button and the button will have to call request
-    // $('#save-edit').click(())
-    //.unbind
